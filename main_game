@@ -1,0 +1,122 @@
+
+@author: jshands
+
+The main file for executing the game. This file will run on an inifinite 
+loop until the game needs to close. We can intiate the game using a while 
+loop 
+
+
+"""
+
+import pygame
+
+pygame.init()
+
+# This is the game display window
+gameDisplay = pygame.display.set_mode((800,600))
+# This is the game display name
+pygame.display.set_caption("GAME NAME")
+
+
+clock = pygame.time.Clock() 
+
+# This is to run the infinite loop of the game
+# If crashed = True, the game quits 
+crashed = False
+
+# These variables are used for the character
+x = 25 
+y = 25
+width = 30
+height = 60 
+velocity = 5
+
+
+while not crashed : 
+    
+    # The time delay is by milliseconds
+    pygame.time.delay(50) 
+    
+    for event in pygame.event.get():
+        # If you hit the big red button in the corner, the game quits
+        if event.type == pygame.QUIT: 
+            crashed = True
+        
+        # Initializing the keys 
+    keys = pygame.key.get_pressed() 
+        
+    if keys[pygame.K_LEFT]: 
+        x -= velocity
+    if keys[pygame.K_RIGHT]: 
+        x += velocity
+    if keys[pygame.K_UP]: 
+        y -= velocity
+    if keys[pygame.K_DOWN]: 
+        y += velocity
+            
+            
+        # This is to ensure we fill the screen with black before our rectangle
+        # gets intiated 
+    gameDisplay.fill((0, 0, 0))    
+        # Every object in pygame is a surface so the first variable needs to 
+        # the surface we intiated in the beginning
+        # Using rect because we have the x, y, width and height defined 
+        #                surface, (RGB values),    (x, y, width, height)
+    pygame.draw.rect(gameDisplay, (0, 255, 0), (x, y, width, height))
+        # Need to update display otherwise, the character won't show up
+    pygame.display.update() 
+        
+    
+    # Possible future use for displaying FPS    
+    # pygame.display.update() 
+    # clock.tick(60)
+
+# Closes the game    
+pygame.quit()
+quit() 
+    
+    
+
+'''
+
+# This is extra code that we may use. I need to figure out how to put
+# this into the main code, but for now it's fine in the comments 
+
+while True: 
+    
+    # Checks for the name
+    try:
+        name = str(input("Input a name: "))
+        break
+    except: 
+        print("This is an error message.")
+    
+while True:
+    
+    try:
+        # Checks for the job of the character
+        job = str(input("Which class would you like to be?", "\n", 
+                        "Wizard?", "Warrior", "Rogue", "\n"))
+        break
+    except: 
+        print("Try that again. Second loop")
+
+'''
+
+'''
+if job == 'wizard' | job == 'w':
+    job = 'wizard' 
+elif job == 'warrior' | job == 'war': 
+    job = 'warrior' 
+else: 
+    job = 'rogue'
+'''
+
+'''
+player = Character(name, job) 
+
+'''
+
+
+# if __name__ == __main__: 
+# 
