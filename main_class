@@ -1,0 +1,35 @@
+"""
+Created on Tue Apr  2 13:16:22 2019
+
+@author: jshands
+
+This file will house the classes used for the game. Things like 
+wizard, rogue, warrior etc. 
+"""
+
+class Character(): 
+    
+    # Global variables for each character
+    health = 0 
+    agility = 5 
+    strength = 5
+    intelligence = 5
+    
+    
+    def __init__(self, name, job): 
+        Character.health+=10
+        self.name = name
+        self.job = job 
+        
+        print("The __init__ class has been executed...")
+        
+        if job == 'wizard': 
+            Character.intelligence+=5
+        elif job == 'warrior': 
+            Character.strength+=5
+        else: 
+            Character.agility+=5
+            
+        
+        print("\n", "Job:", job, "Name:",name)
+        
