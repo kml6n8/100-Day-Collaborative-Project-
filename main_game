@@ -1,3 +1,5 @@
+"""
+Created on Tue Apr  2 13:06:11 2019
 
 @author: jshands
 
@@ -14,46 +16,74 @@ pygame.init()
 
 # This is the game display window
 gameDisplay = pygame.display.set_mode((800,600))
+
+
+# This is another variables just set to width of the screen, so we don't need
+# to change the width
+screenWidth = 600
+
 # This is the game display name
 pygame.display.set_caption("GAME NAME")
 
-
+# This has not been implemented yet 
 clock = pygame.time.Clock() 
 
 # This is to run the infinite loop of the game
-# If crashed = True, the game quits 
-crashed = False
+# If game_on = False, the game quits 
+game_on = True
 
 # These variables are used for the character
-x = 25 
-y = 25
+# X and Y are used as the position to start the char. At some point, 
+# I will add in code to begin the character in the bottom-left 
+x = 50 
+y = 50
 width = 30
 height = 60 
 velocity = 5
 
+# Variables for jumping 
+# If K_SPACE is pressed, jump changes to true and jumpHeight executes
+jump = False 
+jumpHeight = 10
 
-while not crashed : 
+while game_on: 
     
     # The time delay is by milliseconds
     pygame.time.delay(50) 
     
-    for event in pygame.event.get():
+    for event in pygame.event.get(): 
         # If you hit the big red button in the corner, the game quits
         if event.type == pygame.QUIT: 
-            crashed = True
+            game_on = False
         
         # Initializing the keys 
     keys = pygame.key.get_pressed() 
         
-    if keys[pygame.K_LEFT]: 
+    if keys[pygame.K_LEFT] and x > velocity: 
         x -= velocity
-    if keys[pygame.K_RIGHT]: 
+    if keys[pygame.K_RIGHT] and x < screenWidth - width - velocity: 
         x += velocity
-    if keys[pygame.K_UP]: 
-        y -= velocity
-    if keys[pygame.K_DOWN]: 
-        y += velocity
-            
+    
+    # If jump is False, you can move up and down     
+    if not (jump):  
+        if keys[pygame.K_UP] and y > velocity: 
+            y -= velocity
+        if keys[pygame.K_DOWN] and y < screenWidth - height - velocity: 
+            y += velocity
+        if keys[pygame.K_SPACE]: 
+            jump = True
+    else:
+        if jumpHeight >= -10:
+            # Moves up
+            up_down = 1
+            if jumpHeight < 0:
+                # Moves down
+                up_down = -1
+            y -= (jumpHeight**2) * 0.5 * up_down
+            jumpHeight -= 1
+        else: 
+            jump = False
+            jumpHeight = 10
             
         # This is to ensure we fill the screen with black before our rectangle
         # gets intiated 
