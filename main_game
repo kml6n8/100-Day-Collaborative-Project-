@@ -1,13 +1,5 @@
 """
-Created on Tue Apr  2 13:06:11 2019
-
 @author: jshands
-
-The main file for executing the game. This file will run on an inifinite 
-loop until the game needs to close. We can intiate the game using a while 
-loop 
-
-
 """
 
 import pygame
@@ -15,15 +7,32 @@ import pygame
 pygame.init()
 
 # This is the game display window
-gameDisplay = pygame.display.set_mode((800,600))
+gameDisplay = pygame.display.set_mode((500,480))
 
 
 # This is another variables just set to width of the screen, so we don't need
 # to change the width
-screenWidth = 600
+screenWidth = 500
 
 # This is the game display name
 pygame.display.set_caption("GAME NAME")
+
+# Loading in the image sprites 
+walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), 
+             pygame.image.load('R3.png'), pygame.image.load('R4.png'), 
+             pygame.image.load('R5.png'), pygame.image.load('R6.png'), 
+             pygame.image.load('R7.png'), pygame.image.load('R8.png'), 
+             pygame.image.load('R9.png')] 
+
+walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), 
+             pygame.image.load('L3.png'), pygame.image.load('L4.png'), 
+             pygame.image.load('L5.png'), pygame.image.load('L6.png'), 
+             pygame.image.load('L7.png'), pygame.image.load('L8.png'), 
+             pygame.image.load('L9.png')]
+
+background = pygame.image.load('bg.jpg')
+
+character = pygame.image.load('standing.png')
 
 # This has not been implemented yet 
 clock = pygame.time.Clock() 
@@ -36,9 +45,11 @@ game_on = True
 # X and Y are used as the position to start the char. At some point, 
 # I will add in code to begin the character in the bottom-left 
 x = 50 
-y = 50
-width = 30
-height = 60 
+y = 400
+
+# Changed width and height to 64x64 since the sprites are 64-bit images
+width = 64
+height = 64 
 velocity = 5
 
 # Variables for jumping 
@@ -46,32 +57,88 @@ velocity = 5
 jump = False 
 jumpHeight = 10
 
+# Moving left right and counting steps
+left = False 
+right = False 
+walkCount = 0 
+
+
+def gameWindow(): 
+    global walkCount
+    
+    gameDisplay.blit(background, (0,0)) 
+    
+        # This is to ensure we fill the screen with black before our rectangle
+        # gets intiated
+        # gameDisplay.fill((0, 0, 0))    
+        # Every object in pygame is a surface so the first variable needs to 
+        # the surface we intiated in the beginning
+        # Using rect because we have the x, y, width and height defined 
+        #                surface, (RGB values),    (x, y, width, height)
+    # pygame.draw.rect(gameDisplay, (0, 255, 0), (x, y, width, height))
+    
+    if walkCount + 1 >= 27: 
+        walkCount = 0 
+    
+    if left: 
+        gameDisplay.blit(walkLeft[walkCount//3], (x,y))
+        walkCount =+1
+    
+    elif right:
+        gameDisplay.blit(walkRight[walkCount//3], (x,y))
+        walkCount +=1
+        
+    else: 
+        gameDisplay.blit(character, (x,y))
+    # Need to update display otherwise, the character won't show up
+    pygame.display.update() 
+
+# Main Loop 
 while game_on: 
     
-    # The time delay is by milliseconds
-    pygame.time.delay(50) 
+    # The time delay is in milliseconds
+    # pygame.time.delay(50) 
+    
+    clock.tick(27)
     
     for event in pygame.event.get(): 
-        # If you hit the big red button in the corner, the game quits
         if event.type == pygame.QUIT: 
             game_on = False
         
-        # Initializing the keys 
+    # Initializing the keys 
     keys = pygame.key.get_pressed() 
         
     if keys[pygame.K_LEFT] and x > velocity: 
         x -= velocity
-    if keys[pygame.K_RIGHT] and x < screenWidth - width - velocity: 
+        left = True 
+        right = False
+        
+    elif keys[pygame.K_RIGHT] and x < screenWidth - width - velocity: 
         x += velocity
+        left = False 
+        right = True
     
+    else:
+        left = False 
+        right = False 
+        walkCount = 0 
+        
     # If jump is False, you can move up and down     
-    if not (jump):  
+    if not (jump):
+        
+        '''
         if keys[pygame.K_UP] and y > velocity: 
             y -= velocity
         if keys[pygame.K_DOWN] and y < screenWidth - height - velocity: 
             y += velocity
+        '''
+        
         if keys[pygame.K_SPACE]: 
             jump = True
+            left = False
+            right = False 
+            walkCount = 0
+            
     else:
         if jumpHeight >= -10:
             # Moves up
@@ -84,19 +151,11 @@ while game_on:
         else: 
             jump = False
             jumpHeight = 10
-            
-        # This is to ensure we fill the screen with black before our rectangle
-        # gets intiated 
-    gameDisplay.fill((0, 0, 0))    
-        # Every object in pygame is a surface so the first variable needs to 
-        # the surface we intiated in the beginning
-        # Using rect because we have the x, y, width and height defined 
-        #                surface, (RGB values),    (x, y, width, height)
-    pygame.draw.rect(gameDisplay, (0, 255, 0), (x, y, width, height))
-        # Need to update display otherwise, the character won't show up
-    pygame.display.update() 
-        
     
+    # Draws gameWindow
+    gameWindow()
+
+             
     # Possible future use for displaying FPS    
     # pygame.display.update() 
     # clock.tick(60)
@@ -150,3 +209,4 @@ player = Character(name, job)
 
 # if __name__ == __main__: 
 # 
+    
