@@ -1,13 +1,8 @@
 """
 @author: jshands
-
-This file will house the classes used for the game. Things like 
-wizard, rogue, warrior etc. 
 """
 
-class Character(): 
-    
-    # Global variables for each character
+class Job(): 
     health = 0 
     agility = 5 
     strength = 5
@@ -27,7 +22,4 @@ class Character():
             Character.strength+=5
         else: 
             Character.agility+=5
-            
-        
-        print("\n", "Job:", job, "Name:",name)
         
