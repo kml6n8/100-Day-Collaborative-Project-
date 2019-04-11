@@ -1,0 +1,45 @@
+"""
+@author: jshands
+"""
+
+import pygame
+
+class Box(object):
+    
+    box_sprite = pygame.image.load('box.png')
+    box_open_sprite = pygame.image.load('box_open.png')
+    
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width 
+        self.height = height 
+        
+        self.end = 300
+        self.velocity = 15
+        self.path = [self.x, self.end]
+        
+    def draw_box(self, gameDisplay):
+        
+        gameDisplay.blit(self.box_sprite, (self.x, self.y))
+        pygame.display.update()
+        
+    def move_box(self):
+        
+        if self.velocity > 0: 
+            
+            if self.x + self.velocity < self.path[1]: 
+                self.x += self.velocity
+                
+            else: 
+                self.velocity = self.velocity * -1
+                # self.walkCount = 0
+        
+        else:
+            
+            if self.x - self.velocity > self.path[0]:
+                self.x += self.velocity
+            
+            else:
+                self.velocity = self.velocity * -1 
+                
