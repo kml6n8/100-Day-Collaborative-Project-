@@ -1,14 +1,14 @@
-"
+"""
 @author: jshands
-"
-
+"""
 import pygame
 
 class Player(object): 
     
     # Sprites are 65x65
-    walkRight = [pygame.image.load('cricketR.png')]
-    walkLeft = [pygame.image.load('cricketL.png')]
+    walkRight = pygame.image.load('cricketR.png')
+    walkLeft = pygame.image.load('cricketL.png')
+    standing_ = pygame.image.load('cricket_f.png')
 
     # Background sprite is 500x500
     background = pygame.image.load('background.png')
@@ -25,7 +25,6 @@ class Player(object):
         
         self.jumpHeight = 10
         self.velocity = 5
-        self.walkCount = 0
         
         self.jump = False 
         self.left = False
@@ -36,26 +35,18 @@ class Player(object):
     def draw_player(self, gameDisplay):
     
         gameDisplay.blit(self.background, (0,0)) 
-        
-        if self.walkCount + 1 >= 27: 
-            self.walkCount = 0 
     
         if not(self.standing):
             
             if self.left:
-                gameDisplay.blit(self.walkLeft[self.walkCount], (self.x, self.y)) # [walkCount//3]
+                gameDisplay.blit(self.walkLeft, (self.x, self.y)) # [walkCount//3]
                 # walkCount =+1
     
             elif self.right:
-                gameDisplay.blit(self.walkRight[self.walkCount], (self.x, self.y)) # [walkCount//3]
+                gameDisplay.blit(self.walkRight, (self.x, self.y)) # [walkCount//3]
                 # walkCount +=1
         
         else:
-            if self.left:
-                # Using index[0] will reset the position if more sprites are used 
-                gameDisplay.blit(self.walkLeft[0], (self.x, self.y))
-                
-            else: 
-                gameDisplay.blit(self.walkRight[0], (self.x, self.y))
-
-        pygame.display.update() 
+            gameDisplay.blit(self.standing_, (self.x, self.y))
+          
+        pygame.display.update()
