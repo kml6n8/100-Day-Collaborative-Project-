@@ -1,11 +1,10 @@
-"
+"""
 @author: jshands
-"
-
+"""
 
 import pygame
 from player_class import Player
-from projectile import Projectile
+from box_class import Box 
 
 
 pygame.init()
@@ -22,24 +21,25 @@ clock = pygame.time.Clock()
 
 game_on = True
 
+
 # Player class (x, y, width, height)
 cricket = Player(300, 410, 65, 65)
 
-cricket.draw_player(gameDisplay) 
+# Box class (x, y, width, height)
+box = Box(25, 350, 65, 65) 
 
 
 # Main Loop 
 while game_on: 
     
-    # The time delay is in milliseconds
-    # pygame.time.delay(50) 
+
     pygame.display.update() 
     clock.tick(27)
     
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             game_on = False
-    
+      
     # Initializing the keys 
     keys = pygame.key.get_pressed() 
     
@@ -48,12 +48,7 @@ while game_on:
             facing = -1
         else: 
             facing = 1
-        
-        '''
-        if len(projectiles) < 5: 
-            projectiles.append(projectile(round(cricket.x + cricket.width//2),
-            round(cricket.y + cricket.height.y//2), 6, (255, 0, 0), facing))
-        '''
+    
         
     if keys[pygame.K_LEFT] and cricket.x > cricket.velocity: 
         cricket.x -= cricket.velocity
@@ -71,7 +66,6 @@ while game_on:
         cricket.standing = True
         # cricket.left = False 
         # cricket.right = False 
-        cricket.walkCount = 0 
         
     # If jump is False, you can move up and down     
     if not (cricket.jump):
@@ -80,7 +74,6 @@ while game_on:
             cricket.jump = True
             cricket.left = False
             cricket.right = False 
-            cricket.walkCount = 0
             
     else:
         if cricket.jumpHeight >= -10:
@@ -98,8 +91,10 @@ while game_on:
             cricket.jump = False
             cricket.jumpHeight = 10
     
-    # gameWindow()
+    
     cricket.draw_player(gameDisplay)
-
+    box.draw_box(gameDisplay)
+    box.move_box()
+    
 pygame.quit()
 quit() 
