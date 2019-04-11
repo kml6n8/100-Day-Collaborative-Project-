@@ -22,22 +22,10 @@ clock = pygame.time.Clock()
 
 game_on = True
 
-
-projectiles = [] 
-
-# projectile = Projectile(cricket.x, cricket.y, )
-
 # Player class (x, y, width, height)
 cricket = Player(300, 410, 65, 65)
 
 cricket.draw_player(gameDisplay) 
-
-
-        # self.draw_projectile(gameDisplay)
-        
-        # for projectile in projectiles: 
-            # projectile.draw_projectile(gameDisplay)
-        
 
 
 # Main Loop 
@@ -51,13 +39,6 @@ while game_on:
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             game_on = False
-    
-    for projectile in projectiles: 
-        if projectile.x < 500 and projectile.x > 0:
-            projectile.x += projectile.velocity
-            
-        else: 
-            projectiles.pop(projectiles.index[projectile])
     
     # Initializing the keys 
     keys = pygame.key.get_pressed() 
