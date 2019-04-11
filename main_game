@@ -1,62 +1,44 @@
-"""
+"
 @author: jshands
-"""
+"
+
 
 import pygame
 from player_class import Player
+from projectile import Projectile
+
 
 pygame.init()
 
-# Game Display Window
 gameDisplay = pygame.display.set_mode((500,480))
 
 screenWidth = 500
 
-# Game Display Name
+# Game Display Caption
 pygame.display.set_caption("Adventures of Cricket")
 
 # Sets FPS
 clock = pygame.time.Clock() 
 
-# Sprites are 65x65
-walkRight = [pygame.image.load('cricketR.png')]
-
-walkLeft = [pygame.image.load('cricketL.png')]
-
-# Background sprite is 500x500
-background = pygame.image.load('background.png')
-
-# Loads the right-facing sprite when jumping
-character = pygame.image.load('cricketR.png')
-
-
-# class = Player(x, y, width, height)
-cricket = Player(300, 410, 65, 65)
-
-# This is to run the infinite loop of the game
-# If game_on = False, the game quits 
 game_on = True
 
-def gameWindow(): 
-    global walkCount
-    
-    gameDisplay.blit(background, (0,0)) 
-    
-    if cricket.walkCount + 1 >= 27: 
-        cricket.walkCount = 0 
-    
-    if cricket.left:
-        gameDisplay.blit(walkLeft[cricket.walkCount], (cricket.x,cricket.y)) # [walkCount//3]
-        # walkCount =+1
-    
-    elif cricket.right:
-        gameDisplay.blit(walkRight[cricket.walkCount], (cricket.x,cricket.y)) # [walkCount//3]
-        # walkCount +=1
-        
-    else: 
-        gameDisplay.blit(character, (cricket.x,cricket.y))
 
-    pygame.display.update() 
+projectiles = [] 
+
+# projectile = Projectile(cricket.x, cricket.y, )
+
+# Player class (x, y, width, height)
+cricket = Player(300, 410, 65, 65)
+
+cricket.draw_player(gameDisplay) 
+
+
+        # self.draw_projectile(gameDisplay)
+        
+        # for projectile in projectiles: 
+            # projectile.draw_projectile(gameDisplay)
+        
+
 
 # Main Loop 
 while game_on: 
@@ -69,38 +51,51 @@ while game_on:
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             game_on = False
-        
+    
+    for projectile in projectiles: 
+        if projectile.x < 500 and projectile.x > 0:
+            projectile.x += projectile.velocity
+            
+        else: 
+            projectiles.pop(projectiles.index[projectile])
+    
     # Initializing the keys 
     keys = pygame.key.get_pressed() 
+    
+    if keys[pygame.K_SPACE]:
+        if cricket.left: 
+            facing = -1
+        else: 
+            facing = 1
+        
+        '''
+        if len(projectiles) < 5: 
+            projectiles.append(projectile(round(cricket.x + cricket.width//2),
+            round(cricket.y + cricket.height.y//2), 6, (255, 0, 0), facing))
+        '''
         
     if keys[pygame.K_LEFT] and cricket.x > cricket.velocity: 
         cricket.x -= cricket.velocity
         cricket.left = True 
         cricket.right = False
+        cricket.standing = False
         
     elif keys[pygame.K_RIGHT] and cricket.x < screenWidth - cricket.width - cricket.velocity: 
         cricket.x += cricket.velocity
         cricket.left = False 
         cricket.right = True
+        cricket.standing = False
     
     else:
-        cricket.left = False 
-        cricket.right = False 
+        cricket.standing = True
+        # cricket.left = False 
+        # cricket.right = False 
         cricket.walkCount = 0 
         
     # If jump is False, you can move up and down     
     if not (cricket.jump):
         
-        '''
-            ...extra code for moving left and right while jumping...
-        
-        if keys[pygame.K_UP] and cricket.y > cricket.velocity: 
-            cricket.y -= cricket.velocity
-        if keys[pygame.K_DOWN] and cricket.y < screenWidth - cricket.height - cricket.velocity: 
-            cricket.y += cricket.velocity
-        '''
-        
-        if keys[pygame.K_SPACE]: 
+        if keys[pygame.K_UP]: 
             cricket.jump = True
             cricket.left = False
             cricket.right = False 
@@ -122,12 +117,8 @@ while game_on:
             cricket.jump = False
             cricket.jumpHeight = 10
     
-    gameWindow()
+    # gameWindow()
+    cricket.draw_player(gameDisplay)
 
-             
-    # Possible future use for displaying FPS    
-    # pygame.display.update() 
-    # clock.tick(60)
-    
 pygame.quit()
-quit()
+quit() 
