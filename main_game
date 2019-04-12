@@ -21,20 +21,24 @@ clock = pygame.time.Clock()
 
 game_on = True
 
-
 # Player class (x, y, width, height)
 cricket = Player(300, 410, 65, 65)
 
 # Box class (x, y, width, height)
-box = Box(25, 350, 65, 65) 
+box = Box(25, 350, 65, 65)
 
+def win_check():
+    
+    # x[0], y[1], width[2], height[3]
+    # if cricket's y value is less than the box's y-value
+    if cricket.hitbox[1] < box.hitbox[1] + box.hitbox[3] and cricket.hitbox[1] + cricket.hitbox[3] > box.hitbox[1]: 
+        if cricket.hitbox[0] > box.hitbox[0] and cricket.hitbox[0] < box.hitbox[0] + box.hitbox[2]:
+            return True
 
 # Main Loop 
 while game_on: 
-    
 
-    pygame.display.update() 
-    clock.tick(27)
+    clock.tick(25)
     
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
@@ -43,11 +47,6 @@ while game_on:
     # Initializing the keys 
     keys = pygame.key.get_pressed() 
     
-    if keys[pygame.K_SPACE]:
-        if cricket.left: 
-            facing = -1
-        else: 
-            facing = 1
     
         
     if keys[pygame.K_LEFT] and cricket.x > cricket.velocity: 
@@ -91,10 +90,16 @@ while game_on:
             cricket.jump = False
             cricket.jumpHeight = 10
     
-    
     cricket.draw_player(gameDisplay)
-    box.draw_box(gameDisplay)
-    box.move_box()
     
+    if win_check():
+        box.draw_box(gameDisplay, open_box=True)
+        pygame.time.delay(1000)
+        box.move_box()
+        
+    else: 
+        box.draw_box(gameDisplay)
+        box.move_box() 
+        
 pygame.quit()
 quit() 
