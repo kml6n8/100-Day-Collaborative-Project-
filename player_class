@@ -25,28 +25,29 @@ class Player(object):
         
         self.jumpHeight = 10
         self.velocity = 5
+        self.hitbox = (self.x, self.y, self.width, self.height)
         
         self.jump = False 
         self.left = False
         self.right = False 
-
         self.standing = True
 
     def draw_player(self, gameDisplay):
-    
-        gameDisplay.blit(self.background, (0,0)) 
-    
+        # draw_player also draws background 
+        gameDisplay.blit(self.background, (0,0))
+        
+        
         if not(self.standing):
             
             if self.left:
-                gameDisplay.blit(self.walkLeft, (self.x, self.y)) # [walkCount//3]
-                # walkCount =+1
+                gameDisplay.blit(self.walkLeft, (self.x, self.y))
     
             elif self.right:
-                gameDisplay.blit(self.walkRight, (self.x, self.y)) # [walkCount//3]
-                # walkCount +=1
+                gameDisplay.blit(self.walkRight, (self.x, self.y))
         
         else:
             gameDisplay.blit(self.standing_, (self.x, self.y))
-          
+        
+        self.hitbox = (self.x, self.y, self.width, self.height)
+        # pygame.draw.rect(gameDisplay, (0,255,0), self.hitbox,2)
         pygame.display.update()
