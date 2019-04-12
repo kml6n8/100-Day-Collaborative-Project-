@@ -18,14 +18,22 @@ class Box(object):
         self.end = 300
         self.velocity = 15
         self.path = [self.x, self.end]
+        self.hitbox = (self.x + 17, self.y + 11.5, self.width + 45, self.height - 35)
         
-    def draw_box(self, gameDisplay):
+    def draw_box(self, gameDisplay, open_box=False):
         
-        gameDisplay.blit(self.box_sprite, (self.x, self.y))
-        pygame.display.update()
+        if open_box == True: 
+            gameDisplay.blit(self.box_open_sprite, (self.x, self.y))
+            # self.hitbox = (self.x + 17, self.y + 11.5, self.width + 45, self.height - 35)
+            pygame.display.update()
+        
+        else:
+            gameDisplay.blit(self.box_sprite, (self.x, self.y))
+            self.hitbox = (self.x + 17, self.y + 11.5, self.width + 45, self.height - 35)
+            # pygame.draw.rect(gameDisplay, (255,0,0), self.hitbox,2)
+            pygame.display.update()
         
     def move_box(self):
-        
         if self.velocity > 0: 
             
             if self.x + self.velocity < self.path[1]: 
@@ -33,7 +41,6 @@ class Box(object):
                 
             else: 
                 self.velocity = self.velocity * -1
-                # self.walkCount = 0
         
         else:
             
